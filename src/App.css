@@ -8,3 +8,10 @@
   align-items: center;
   flex-direction: column;
 }
+
+.Button {
+  background-color: gray;
+  color: black;
+  margin: 10px;
+  padding: 5px auto;
+}

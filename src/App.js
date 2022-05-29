@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import './App.css';
 import Book from './Components/Book';
+import {bookList} from "./assets/data"
 
 //Functional Component
 // function App() {
@@ -15,71 +16,86 @@ import Book from './Components/Book';
 //Class Component
 class App extends Component{
 
-  userChoice = ["User choice", "Unknown"]
+  userChoice = [undefined, undefined]
+  count = 3
 
   //State: a property of class components.
   //Initilizing class properties outside of a constructor is a ES6+ feature.
   state = {
-    books: [
-      {name: "How Google Works", writer: "Eric and Johnathan"},
-      {name: "Rich Dad Poor Dad", writer: "Robert"},
-      {name: "Sultana's Dream", writer: "Rokeya"},
-      {name: this.userChoice[0], writer: this.userChoice[1]}
-    ]
+    books: bookList,
+    showBooks: true
   }
 
   //While calling this method in inside the JSX code, don't use (). 
   //Otherwise, the method will be called without clicking the button.
-  showEnglishOnly = (bookName, author) => {
-    //don't try to change the state directly.
-    this.setState(
-      {
-        books: [
-          {name: "How Google Works", writer: "Eric and Johnathan"},
-          {name: "Rich Dad Poor Dad", writer: "Robert"},
-          {name: bookName, writer: author},
-          {name: this.userChoice[0], writer: this.userChoice[1]}
-        ]
-      }
-    )
+  toggleBookList = () =>{
+    this.setState({
+      showBooks: !this.state.showBooks
+    })
   }
 
   addBookName = (event) => {
     this.userChoice[0] = event.target.value
-    this.setState(
-      {
-        books: [
-          {name: this.state.books[0].name, writer: this.state.books[0].writer},
-          {name: this.state.books[1].name, writer: this.state.books[1].writer},
-          {name: this.state.books[2].name, writer: this.state.books[2].writer},
-          {name: this.userChoice[0], writer: this.userChoice[1]}
-        ]
-      }
-    )
   }
 
-  addWritekName = (event) => {
+  addWriterName = (event) => {
     this.userChoice[1] = event.target.value
-    this.setState(
-      {
-        books: [
-          {name: this.state.books[0].name, writer: this.state.books[0].writer},
-          {name: this.state.books[1].name, writer: this.state.books[1].writer},
-          {name: this.state.books[2].name, writer: this.state.books[2].writer},
-          {name: this.userChoice[0], writer: this.userChoice[1]}
-        ]
-      }
-    )
+  }
+
+  deleteBook = (index) => {
+    let books = [...this.state.books]
+    books.splice(index, 1)
+    //don't try to change the state directly.
+    this.setState({
+      books: books
+    })
+  }
+
+  addBook = (name, writer) => {
+
+    if(name === undefined || writer === undefined){
+      return
+    }
+
+    let books = [...this.state.books]
+
+    let temp = {
+      id: this.count,
+      name: name,
+      writer: writer
+    }
+
+    this.count++
+
+    books.push(temp)
+    this.setState({
+      books: books
+    })
+
   }
 
   render(){
+
+    let bookCom
+    if(this.state.showBooks){
+      bookCom = this.state.books.map((item, index) => {
+        return(
+          <Book 
+          name = {item.name} 
+          writer = {item.writer} 
+          key = {item.id} 
+          delete = {() => this.deleteBook(index)}/>
+        )
+      })
+    }
+
     return (
       <div className="App">
         <h1>Book List:</h1>
         <div>
-          <button onClick={() => this.showEnglishOnly("Freakonomics", "Steven and Stephen")}>
-            Show only the info of the books written by native English Speakers
-          </button>
+          <button
+          className="Button"
+          onClick={this.toggleBookList}>Toggle Book List</button>
         </div>
         <div>
           <p>Add book name:</p>
@@ -87,22 +103,17 @@ class App extends Component{
         </div>
         <div>
           <p>Add Writer name:</p>
-          <input type="text" onChange={this.addWritekName}/>
+          <input type="text" onChange={this.addWriterName}/>
+        </div>
+        <div>
+          <button 
+          className="Button" 
+          onClick={() => this.addBook(this.userChoice[0], this.userChoice[1])}>
+            Add Book
+          </button>
         </div>
         <div className="com">
-          <Book name = {this.state.books[0].name} 
-                writer = {this.state.books[0].writer}>
-          </Book>
-          <Book name = {this.state.books[1].name} 
-                writer = {this.state.books[1].writer}>
-          </Book>
-          <Book name = {this.state.books[2].name} 
-                writer = {this.state.books[2].writer} 
-                change = {() => this.showEnglishOnly("The Alchemist", "Paulo")}>
-          </Book>
-          <Book name = {this.state.books[3].name} 
-                writer = {this.state.books[3].writer}>
-          </Book>
+          {bookCom}
         </div>
       </div>
     );
