@@ -2,6 +2,7 @@ import { Component } from 'react';
 import './App.css';
 import Book from './Components/Book';
 import {bookList} from "./assets/data"
+import AddBook from './Components/AddBook';
 
 //Functional Component
 // function App() {
@@ -91,6 +92,12 @@ class App extends Component{
 
     return (
       <div className="App">
+        <div className="nav_bar">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/new">Add Book</a></li>
+          </ul>
+        </div>
         <h1>Book List:</h1>
         <div>
           <button
@@ -114,6 +121,7 @@ class App extends Component{
         </div>
         <div className="com">
           {bookCom}
+          <AddBook />
         </div>
       </div>
     );
