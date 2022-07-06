@@ -35,3 +35,7 @@
   text-decoration: none;
   color: black;
 }
+
+.nav_bar a:hover, a:active, a.active{
+  color: red;
+}

@@ -3,6 +3,7 @@ import './App.css';
 import Book from './Components/Book';
 import {bookList} from "./assets/data"
 import AddBook from './Components/AddBook';
+import {Route, Routes, NavLink} from 'react-router-dom'
 
 //Functional Component
 // function App() {
@@ -23,17 +24,11 @@ class App extends Component{
   //State: a property of class components.
   //Initilizing class properties outside of a constructor is a ES6+ feature.
   state = {
-    books: bookList,
-    showBooks: true
+    books: bookList
   }
 
   //While calling this method in inside the JSX code, don't use (). 
   //Otherwise, the method will be called without clicking the button.
-  toggleBookList = () =>{
-    this.setState({
-      showBooks: !this.state.showBooks
-    })
-  }
 
   addBookName = (event) => {
     this.userChoice[0] = event.target.value
@@ -77,32 +72,25 @@ class App extends Component{
 
   render(){
 
-    let bookCom
-    if(this.state.showBooks){
-      bookCom = this.state.books.map((item, index) => {
-        return(
-          <Book 
-          name = {item.name} 
-          writer = {item.writer} 
-          key = {item.id} 
-          delete = {() => this.deleteBook(index)}/>
-        )
-      })
-    }
+    const bookCom = this.state.books.map((item, index) => {
+      return(
+        <Book 
+        name = {item.name} 
+        writer = {item.writer} 
+        key = {item.id} 
+        delete = {() => this.deleteBook(index)}/>
+      )
+    })
 
     return (
       <div className="App">
-        <div className="nav_bar">
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/new">Add Book</a></li>
-          </ul>
-        </div>
-        <h1>Book List:</h1>
         <div>
-          <button
-          className="Button"
-          onClick={this.toggleBookList}>Toggle Book List</button>
+          <nav className="nav_bar">
+            <ul>
+              <li><NavLink to="/" exact>Home</NavLink></li>
+              <li><NavLink to="/add_book">Add Book</NavLink></li>
+            </ul>
+          </nav>
         </div>
         <div>
           <p>Add book name:</p>
@@ -120,8 +108,10 @@ class App extends Component{
           </button>
         </div>
         <div className="com">
-          {bookCom}
-          <AddBook />
+          <Routes>
+            <Route path='/' exact element = {bookCom}/>
+            <Route path='/add_book' exact element = {<AddBook />}/>
+          </Routes>
         </div>
       </div>
     );
