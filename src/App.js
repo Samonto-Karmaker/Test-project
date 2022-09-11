@@ -92,21 +92,6 @@ class App extends Component{
             </ul>
           </nav>
         </div>
-        <div>
-          <p>Add book name:</p>
-          <input type="text" onChange={this.addBookName}/>
-        </div>
-        <div>
-          <p>Add Writer name:</p>
-          <input type="text" onChange={this.addWriterName}/>
-        </div>
-        <div>
-          <button 
-          className="Button" 
-          onClick={() => this.addBook(this.userChoice[0], this.userChoice[1])}>
-            Add Book
-          </button>
-        </div>
         <div className="com">
           <Routes>
             <Route path='/' exact element = {bookCom}/>
