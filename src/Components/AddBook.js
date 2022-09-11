@@ -17,7 +17,7 @@ const AddBook = () =>{
             <div>
             <button 
             className="Button" 
-            onClick={() => this.addBook(App.userChoice[0], App.userChoice[1])}>
+            onClick={() => App.addBook(App.userChoice[0], App.userChoice[1])}>
                 Add Book
             </button>
             </div>

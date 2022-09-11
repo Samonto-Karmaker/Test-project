@@ -5,3 +5,8 @@
     border: 1px solid;
     border-radius: 5px;
 }
+
+.book:hover{
+    color: red;
+    cursor: pointer;
+}
