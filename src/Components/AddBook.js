@@ -1,29 +1,43 @@
-import React from "react";
-import App from "../App"
+import React, {Component} from "react";
 import "../StyleSheets/AddBook.css"
 
-const AddBook = () =>{
-    return(
-        <div>
-            <h1>Add New Book</h1>
+class AddBook extends Component{
+    state = {
+        bookName: "",
+        writer: ""
+    }
+
+    handleInputChange = event => {
+        const name = event.target.name
+        const value = event.target.value
+        this.setState({
+            [name]: value
+        })
+    }
+
+    handleSubmit = event => {
+        //Prevents from reload after an event
+        event.preventDefault()
+    }
+
+    render(){
+        return(
             <div>
-            <p>Add book name:</p>
-            <input type="text" onChange={App.addBookName}/>
+                <h1>Add New Book</h1>
+                <form onSubmit={event => this.handleSubmit(event)}>
+                    <label>Book Name: </label>
+                    <br/>
+                    <input type = "text" name = "bookName" value = {this.state.bookName} onChange = {event => this.handleInputChange(event)} />
+                    <br/>
+                    <label>Writer: </label>
+                    <br/>
+                    <input type = "text" name = "writer" value = {this.state.writer} onChange = {event => this.handleInputChange(event)} />
+                    <br/>
+                    <input type = "submit" value = "Submit" className="Button"/>
+                </form>
             </div>
-            <div>
-            <p>Add Writer name:</p>
-            <input type="text" onChange={App.addWriterName}/>
-            </div>
-            <div>
-            <button 
-            className="Button" 
-            onClick={() => App.addBook(App.userChoice[0], App.userChoice[1])}>
-                Add Book
-            </button>
-            </div>
-        </div>
-        
-    )
+        )
+    }
 }
 
 export default AddBook
